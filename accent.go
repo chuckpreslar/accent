@@ -33,7 +33,7 @@ type accentuator interface {
 	accentuate(interface{}) string
 }
 
-// colors in a map of color types to the format
+// colors is a map of color types to the format
 // string that provides the accent.
 var colors = map[color]string{
 	White:   "\x1B[37m%v\x1B[39m",
@@ -47,7 +47,7 @@ var colors = map[color]string{
 	Yellow:  "\x1B[33m%v\x1B[39m",
 }
 
-// decorations in a map of decoration types to the
+// decorations is a map of decoration types to the
 // format string that provides the accent.
 var decorations = map[decoration]string{
 	Bold:          "\x1B[1m%v\x1B[22m",
@@ -69,8 +69,8 @@ func (d decoration) accentuate(input interface{}) string {
 }
 
 // Message formats a string based on the input parameter
-// accented with the provided accentuators return the
-// resulting string.
+// accented with the provided accentuators and returning 
+// the resulting string.
 func Message(input interface{}, accents ...accentuator) string {
 	for i := 0; i < len(accents); i++ {
 		input = accents[i].accentuate(input)
