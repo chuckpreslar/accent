@@ -28,7 +28,7 @@ const (
 )
 
 type accentuator interface {
-	// accentuate accepts and interface and returns
+	// accentuate accepts an interface and returns
 	// an accented string.
 	accentuate(interface{}) string
 }
