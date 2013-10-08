@@ -23,7 +23,8 @@ import (
 )
 
 func main() {
-  fmt.Println(accent.Message("Hello,", accent.Red, accent.Underline), accent.Message("world!", accent.Yellow))
+  fmt.Println(accent.Message("Hello,", accent.Red, accent.Underline),
+    accent.Message("world!", accent.Yellow))
 }
 ```
 
