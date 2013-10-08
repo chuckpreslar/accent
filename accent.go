@@ -4,27 +4,27 @@ package accent
 
 import "fmt"
 
-type color uint8
+type color [2]uint8
 
-const (
-	White color = iota
-	Grey
-	Black
-	Blue
-	Cyan
-	Green
-	Magenta
-	Red
-	Yellow
+var (
+	White   = color{37, 39}
+	Grey    = color{90, 39}
+	Black   = color{30, 39}
+	Blue    = color{34, 39}
+	Cyan    = color{36, 39}
+	Green   = color{32, 39}
+	Magenta = color{35, 39}
+	Red     = color{31, 39}
+	Yellow  = color{33, 39}
 )
 
-type decoration uint8
+type decoration [2]uint8
 
-const (
-	Bold decoration = iota
-	Italic
-	Underline
-	Strikethrough
+var (
+	Bold          = decoration{1, 22}
+	Italic        = decoration{3, 23}
+	Underline     = decoration{4, 24}
+	Strikethrough = decoration{9, 29}
 )
 
 type accentuator interface {
@@ -33,43 +33,20 @@ type accentuator interface {
 	accentuate(interface{}) string
 }
 
-// colors is a map of color types to the format
-// string that provides the accent.
-var colors = map[color]string{
-	White:   "\x1B[37m%v\x1B[39m",
-	Grey:    "\x1B[90m%v\x1B[39m",
-	Black:   "\x1B[30m%v\x1B[39m",
-	Blue:    "\x1B[34m%v\x1B[39m",
-	Cyan:    "\x1B[36m%v\x1B[39m",
-	Green:   "\x1B[32m%v\x1B[39m",
-	Magenta: "\x1B[35m%v\x1B[39m",
-	Red:     "\x1B[31m%v\x1B[39m",
-	Yellow:  "\x1B[33m%v\x1B[39m",
-}
-
-// decorations is a map of decoration types to the
-// format string that provides the accent.
-var decorations = map[decoration]string{
-	Bold:          "\x1B[1m%v\x1B[22m",
-	Italic:        "\x1B[3m%v\x1B[23m'",
-	Underline:     "\x1B[4m%v\x1B[24m",
-	Strikethrough: "\x1B[9m%v\x1B[29m",
-}
-
 // accentuate implements the accentuator interface
 // for the color type.
 func (c color) accentuate(input interface{}) string {
-	return fmt.Sprintf(colors[c], input)
+	return fmt.Sprintf("\x1B[%dm%v\x1B[%dm", c[0], input, c[1])
 }
 
 // accentuate implements the accentuator interface
 // for the decoration type.
 func (d decoration) accentuate(input interface{}) string {
-	return fmt.Sprintf(decorations[d], input)
+	return fmt.Sprintf("\x1B[%dm%v\x1B[%dm", d[0], input, d[1])
 }
 
 // Message formats a string based on the input parameter
-// accented with the provided accentuators and returning 
+// accented with the provided accentuators and returning
 // the resulting string.
 func Message(input interface{}, accents ...accentuator) string {
 	for i := 0; i < len(accents); i++ {
