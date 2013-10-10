@@ -33,16 +33,26 @@ type accentuator interface {
 	accentuate(interface{}) string
 }
 
+// Implements Stringer interface for color type.
+func (c color) String() string {
+	return fmt.Sprintf("\x1B[%dm%%v\x1B[%dm", c[0], c[1])
+}
+
 // accentuate implements the accentuator interface
 // for the color type.
 func (c color) accentuate(input interface{}) string {
-	return fmt.Sprintf("\x1B[%dm%v\x1B[%dm", c[0], input, c[1])
+	return fmt.Sprintf(c.String(), input)
+}
+
+// Implements Stringer interface for decoration type.
+func (d decoration) String() string {
+	return fmt.Sprintf("\x1B[%dm%%v\x1B[%dm", d[0], d[1])
 }
 
 // accentuate implements the accentuator interface
 // for the decoration type.
 func (d decoration) accentuate(input interface{}) string {
-	return fmt.Sprintf("\x1B[%dm%v\x1B[%dm", d[0], input, d[1])
+	return fmt.Sprintf(d.String(), input)
 }
 
 // Message formats a string based on the input parameter
